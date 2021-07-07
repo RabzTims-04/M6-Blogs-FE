@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Container, Image } from "react-bootstrap";
+import { Container, Image, Button } from "react-bootstrap";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author";
 import "./styles.css";
 
@@ -12,12 +13,13 @@ class Blog extends Component {
     loading: true
   }
 
-  url = `${REACT_APP_BACKEND_URL}/blogs/${this.props.match.params.id}`
+  id = this.props.match.params.id
+  url = `${REACT_APP_BACKEND_URL}/blogs/${this.id}`
 
   fetchSingleBlog = () =>{
     console.log(this.url);
     
-     const blogId = this.props.match.params.id
+     const blogId = this.id
      const blog = this.props.blogs.find(blog => blog._id.toString() === blogId)
      if(blog){
        this.setState({
@@ -31,6 +33,44 @@ class Blog extends Component {
     this.fetchSingleBlog()
     console.log(this.state.blog);
   }
+
+  componentDidUpdate =()=>{
+    if(this.state.nextPage){
+      window.location.replace('http://localhost:3006')
+    }
+  }
+
+  deleteBlog = async (e) =>{
+    try {
+      const response = await fetch(this.url,{
+        method:'DELETE'
+      })
+      if(response.ok){
+        alert('deleted successfully')
+        this.setState({
+          ...this.state,
+          nextPage:true
+        })
+      }
+      else{
+        console.log('error in deleting');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+
+  currentTime =(dataTime) =>{
+    let time = new Date(dataTime).toLocaleTimeString()
+    console.log('time',time);
+    return time
+}
+
+  currentDate =(dataDate) =>{
+    let date = new Date(dataDate).toLocaleDateString()
+    console.log('date',date);
+    return date
+}
 
   render() {
     let {blog, loading } = this.state
@@ -48,12 +88,35 @@ class Blog extends Component {
                 <BlogAuthor {...blog.author} />
               </div>
               <div className="blog-details-info">
-                <div>{blog.createdAt}</div>
+                <div>{this.currentDate(blog.createdAt)}</div>
+                <div>{this.currentTime(blog.createdAt)}</div>
                 <div>{`${blog.readTime.value} ${blog.readTime.unit} read`}</div>
               </div>
             </div>
 
             <div dangerouslySetInnerHTML={{ __html: blog.content }}></div>
+
+            <div className="d-flex justify-content-between mt-5 pt-5">
+              <div>
+                  <Link to={`/edit/${this.id}`}>
+                    <Button
+                      variant="secondary">
+                        Edit Post
+                      </Button>
+                  </Link> 
+              </div>
+              <div>
+           
+                    <Button
+                      onClick={(e)=>this.deleteBlog(e)} 
+                      variant="danger">
+                        Delete
+                      </Button>
+                  
+                   
+              </div>
+            </div> 
+
           </Container>
         </div>
       );
