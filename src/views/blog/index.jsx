@@ -32,8 +32,16 @@ class Blog extends Component {
     
      const blogId = this.id
      const blog = this.props.blogs.find(blog => blog._id.toString() === blogId)
-     if(blog){
+     if(this.props.edited){
        this.setState({
+         ...this.state,
+         blog: this.props.edited,
+         loading:false
+       })
+     }
+     else{
+       this.setState({
+         ...this.state,
          blog,
          loading:false
        })
