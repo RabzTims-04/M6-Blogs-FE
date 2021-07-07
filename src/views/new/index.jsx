@@ -15,8 +15,6 @@ export default class NewBlogPost extends Component {
 	    "title": "",
 	    "cover":"",
       "content":"",
-	    "readTime": {
-	    },
 	    "author": {
 	      "name": "",
 	      "avatar":""
@@ -39,8 +37,6 @@ export default class NewBlogPost extends Component {
           title:this.state.blog.title,
           cover:this.state.blog.cover,
           content:this.state.blog.content,
-          readTime:{
-          },
           author:{
             name:this.state.blog.author.name,
             avatar: this.state.blog.author.avatar
@@ -56,8 +52,6 @@ export default class NewBlogPost extends Component {
             "title": "",
             "cover":"",
             "content":"",
-             "readTime": {
-            },
             "author": {
               "name": "",
               "avatar":""
