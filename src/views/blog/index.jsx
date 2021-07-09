@@ -62,9 +62,7 @@ class Blog extends Component {
       })
       this.fetchComments()
     }
-    if(this.state.nextPage){
-      window.location.replace('http://localhost:3006')
-    }
+   
   }
 
   deleteBlog = async (e) =>{
@@ -219,7 +217,7 @@ class Blog extends Component {
 
             <div className="blog-details-container">
               <div className="blog-details-author">
-                <BlogAuthor {...blog.author} />
+                <BlogAuthor authors={blog.authors} />
               </div>
               <div className="blog-details-info">
                 <div>{this.currentDate(blog.createdAt)}</div>
@@ -240,8 +238,20 @@ class Blog extends Component {
                   </Link> 
               </div>
               <div>
+                 
+                    <Button
+                    href={`${this.url}/pdf`}
+                    target="_blank"
+                      variant="info">
+                        Download PDF
+                      </Button>
+                  
+              </div>
+              <div>
            
                     <Button
+                    as={Link}
+                    to="/"
                       onClick={(e)=>this.deleteBlog(e)} 
                       variant="danger">
                         Delete

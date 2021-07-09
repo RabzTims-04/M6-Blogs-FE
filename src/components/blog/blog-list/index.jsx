@@ -14,15 +14,19 @@ export default class BlogList extends Component {
   fetchBlogs = async () => {
     try {
       const response = await fetch(this.url)
-      const data = await response.json()
+      const array = await response.json()
+      const data = await array.blogs
+      console.log(data);
       if(response.ok){
         this.setState({
           blogs: data
         })
         this.props.blogs(data)
+       
       }
       else{
         console.log("cannot get blogs");
+       
       }
     } catch (error) {
       console.log(error);

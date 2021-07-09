@@ -4,25 +4,49 @@ import ReactQuill from "react-quill";
 import { Container, Form, Button } from "react-bootstrap";
 import striptags from "striptags";
 import "./styles.css";
+import { Link } from "react-router-dom";
 
 const {REACT_APP_BACKEND_URL} = process.env
 export default class NewBlogPost extends Component {
 
   state={
+    authors:[],
+    authorId:'',
     nextPage:false,
     blog:{
 	    "category": "",
 	    "title": "",
 	    "cover":"",
       "content":"",
-	    "author": {
-	      "name": "",
-	      "avatar":""
-	    }
+	    "authors":[]
     }
   }
 
   url = `${REACT_APP_BACKEND_URL}/blogs`
+  authorUrl = `${REACT_APP_BACKEND_URL}/authors`
+
+  fetchAuthors = async () =>{
+    try {
+      const response = await fetch(this.authorUrl)
+      const array = await response.json()
+      const data = await array.authors
+      console.log(data);
+      if (response.ok) {
+        this.setState({
+          ...this.state,
+          authors:data
+        })
+      } else {
+        console.log("error fetching authors");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidMount = () =>{
+    this.fetchAuthors()
+  }
 
   addBlog = async (e) =>{
     e.preventDefault()
@@ -37,10 +61,7 @@ export default class NewBlogPost extends Component {
           title:this.state.blog.title,
           cover:this.state.blog.cover,
           content:this.state.blog.content,
-          author:{
-            name:this.state.blog.author.name,
-            avatar: this.state.blog.author.avatar
-          }
+          authors: [this.state.blog.authors]
         })
       })
       const data = await response.json()
@@ -52,13 +73,9 @@ export default class NewBlogPost extends Component {
             "title": "",
             "cover":"",
             "content":"",
-            "author": {
-              "name": "",
-              "avatar":""
-            }
+            "authors":[]
           }
         })
-        window.location.replace('http://localhost:3006')
       }
       else{
         console.log("error during adding a new post");
@@ -128,7 +145,30 @@ export default class NewBlogPost extends Component {
             </Form.Control>
           </Form.Group>
 
-          <Form.Group controlId="blog-form" className="mt-3">
+          <Form.Group className="mt-3">
+            <Form.Label>Authors</Form.Label>
+            <Form.Control 
+            id={this.state.authorId}
+            required
+            value={this.state.blog.authors}
+            onChange={(e)=> {
+              console.log(e.target[e.target.selectedIndex].id);
+              console.log(e.target.selectedIndex);
+              this.setState({
+              blog:{
+                ...this.state.blog,
+                authors: e.target[e.target.selectedIndex].id                  
+              }
+            })}}
+            size="lg" 
+            as="select">
+              {this.state.authors && this.state.authors.map( author => 
+              <option id={author._id} >{author.name} {author.surname} </option>
+              )}
+            </Form.Control>
+          </Form.Group>
+
+          {/* <Form.Group controlId="blog-form" className="mt-3">
             <Form.Label>Author Name</Form.Label>
             <Form.Control 
             id="name"
@@ -165,7 +205,7 @@ export default class NewBlogPost extends Component {
             })}
             size="lg" 
             placeholder="Link" />
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group className="mt-3">
             <Form.Label>Blog Content</Form.Label>

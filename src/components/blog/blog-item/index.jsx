@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./styles.css";
 export default class BlogItem extends Component {
   render() {
-    const { title, cover, author, _id } = this.props;
+    const { title, cover, authors, _id } = this.props;
     return (
       <Link to={`/blog/${_id}`} className="blog-link">
         <Card className="blog-card">
@@ -14,7 +14,7 @@ export default class BlogItem extends Component {
             <Card.Title>{title}</Card.Title>
           </Card.Body>
           <Card.Footer>
-            <BlogAuthor {...author} />
+            <BlogAuthor authors= {authors} />
           </Card.Footer>
         </Card>
       </Link>

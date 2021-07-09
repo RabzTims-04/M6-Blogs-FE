@@ -6,6 +6,7 @@ import Home from "./views/home";
 import Blog from "./views/blog";
 import NewBlogPost from "./views/new";
 import EditBlogPost from "./views/edit"
+import AuthorRegister from "./views/authorRegister";
 import { BrowserRouter, Route } from "react-router-dom";
 
 function App() {
@@ -23,12 +24,15 @@ function App() {
 
   return (
     <BrowserRouter>
-      <NavBar />
-      <Route path="/" exact render={(routerProps)=> <Home {...routerProps} blogs={updated} /> }/>
-      <Route path="/blog/:id" render={(routerProps)=> <Blog {...routerProps} blogs={blog} edited={editPost} /> }/>
-      <Route path="/new" exact component={NewBlogPost} />
-      <Route path="/edit/:id" exact render={(routerProps)=> <EditBlogPost blogs={blog} edited={editedPost} {...routerProps}/> }/>
-      <Footer />
+      <Route path="/authorsRegister" exact render={(routerProps)=> <AuthorRegister {...routerProps} /> }/>
+      <>
+        <NavBar />
+        <Route path="/" exact render={(routerProps)=> <Home {...routerProps} blogs={updated} /> }/>
+        <Route path="/blog/:id" render={(routerProps)=> <Blog {...routerProps} blogs={blog} edited={editPost} /> }/>
+        <Route path="/new" exact component={NewBlogPost} />
+        <Route path="/edit/:id" exact render={(routerProps)=> <EditBlogPost blogs={blog} edited={editedPost} {...routerProps}/> }/>
+        <Footer />
+      </>
     </BrowserRouter>
   );
 }

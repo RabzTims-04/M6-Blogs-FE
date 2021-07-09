@@ -18,10 +18,7 @@ const {REACT_APP_BACKEND_URL} = process.env
 	    "title": "",
 	    "cover":"",
       "content":"",
-	    "author": {
-	      "name": "",
-	      "avatar":""
-	    }
+	    "authors":[{}]
     }
   }
 
@@ -41,10 +38,11 @@ const {REACT_APP_BACKEND_URL} = process.env
                 "title": blog.title,
                 "cover":blog.cover,
                 "content":blog.content,
-                "author": {
-                  "name": blog.author.name,
-                  "avatar":blog.author.avatar
-                }
+                "authors": [{
+                  name:blog.authors[0].name,
+                  surname:blog.authors[0].surname,
+                  avatar:blog.authors[0].avatar,
+                }]
             }
        });
     }
@@ -63,10 +61,7 @@ const {REACT_APP_BACKEND_URL} = process.env
           title:this.state.blog.title,
           cover:this.state.blog.cover,
           content:this.state.blog.content,
-          author:{
-            name:this.state.blog.author.name,
-            avatar: this.state.blog.author.avatar
-          }
+          authors:[this.state.blog.authors]
         }),
         headers:{
           "content-type": "application/json"
@@ -225,14 +220,33 @@ const {REACT_APP_BACKEND_URL} = process.env
             <Form.Control 
             id="name"
             required
-            value={this.state.blog.author.name}
+            value={this.state.blog.authors[0].name}
             onChange={(e)=> this.setState({
               blog:{
                 ...this.state.blog,
-                author:{
-                  ...this.state.blog.author,
+                authors:[{
+                  ...this.state.blog.authors[0],
                   name: e.target.value
-                }                   
+                }  ]                 
+              }
+            })}
+            size="lg" 
+            placeholder="Name" />
+          </Form.Group>
+
+          <Form.Group controlId="blog-form" className="mt-3">
+            <Form.Label>Author SurName</Form.Label>
+            <Form.Control 
+            id="surname"
+            required
+            value={this.state.blog.authors[0].surname}
+            onChange={(e)=> this.setState({
+              blog:{
+                ...this.state.blog,
+                authors:[{
+                  ...this.state.blog.authors[0],
+                  surname: e.target.value
+                } ]                  
               }
             })}
             size="lg" 
@@ -245,14 +259,15 @@ const {REACT_APP_BACKEND_URL} = process.env
             type="text"
             id="avatar"
             required
-            value={this.state.blog.author.avatar}
+            value={this.state.blog.authors[0].avatar}
             onChange={(e)=> this.setState({
               blog:{
                 ...this.state.blog,
-                author:{
-                  ...this.state.blog.author,
-                  avatar: e.target.value
-                }                   
+                authors:[
+                  {...this.state.blog.authors[0],
+                  avatar: e.target.value}
+                ]
+                                   
               }
             })}
             size="lg" 
